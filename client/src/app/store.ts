@@ -17,9 +17,9 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-  key: 'root', // localStorage key
-  storage, // storage engine
-  whitelist: ['auth'], // only persist auth slice
+  key: 'feedsHubAuth',
+  storage,
+  whitelist: ['auth'], 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -15,4 +15,9 @@ export interface ISignupRequestData {
   password: string;
 }
 
+export interface ILoginRequestData {
+  email: string;
+  password: string;
+}
+
 export type ISignupResponse = ICommonResponse<ISignupResponseData>;

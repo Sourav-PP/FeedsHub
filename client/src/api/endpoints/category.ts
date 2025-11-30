@@ -6,9 +6,7 @@ import { categoryRoutes } from '../routeConst/categoryRoutes';
 
 export const fetchCategories = async (): Promise<IGetCategoriesResponse> => {
   try {
-    console.log('fetching categories')
     const response = await axiosClient.get<IGetCategoriesResponse>(categoryRoutes.getAll);
-    console.log('res: ', response)
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
