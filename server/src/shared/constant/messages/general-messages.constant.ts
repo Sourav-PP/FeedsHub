@@ -3,6 +3,7 @@ export const generalMessages = {
         OPERATION_SUCCESS: "Operation completed successfully",
         REGISTRATION_SUCCESSFUL: "Registration is successful",
         CATEGORY_FETCHED: "Categories fetched successfully",
+        TOKEN_REFRESHED: "Token refreshed successfully",
     },
     ERROR: {
         EMAIL_EXISTS: "User with this email already exists",
@@ -17,6 +18,7 @@ export const generalMessages = {
         INVALID_TOKEN: "Token is invalid",
         NO_TOKEN: "No token is provided",
         ROUTE_NOT_FOUND: "Route not found",
+        REFRESH_TOKEN_NOT_FOUND: "You need to login again",
     },
     INFO: {
         PROCESSING: "Your request is being processed",

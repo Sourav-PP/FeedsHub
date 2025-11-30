@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { config } from "../../shared/config.constant";
 import { errorHandler } from "../../presentation/middleware/error-handler.middleware";
 import { AuthRoutes } from "../../presentation/routes/auth.routes";
@@ -17,6 +18,8 @@ export class Server {
 
     private configureMiddleware(): void {
         this._app.use(express.json());
+        this._app.use(express.urlencoded({ extended: true }));
+        this._app.use(cookieParser());
         this._app.use(
             cors({
                 origin: config.client.uri,
@@ -29,7 +32,7 @@ export class Server {
         const authRoutes = new AuthRoutes();
         const categoryRoutes = new CategoryRoutes();
 
-        this._app.use("/api/users", authRoutes.route);
+        this._app.use("/api/auth", authRoutes.route);
         this._app.use("/api/categories", categoryRoutes.route);
     }
 
