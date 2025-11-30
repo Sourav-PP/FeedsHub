@@ -2,6 +2,7 @@ export const generalMessages = {
     SUCCESS: {
         OPERATION_SUCCESS: "Operation completed successfully",
         REGISTRATION_SUCCESSFUL: "Registration is successful",
+        LOGIN_SUCCESSFUL: "Login is successful",
         CATEGORY_FETCHED: "Categories fetched successfully",
         TOKEN_REFRESHED: "Token refreshed successfully",
     },
@@ -19,6 +20,9 @@ export const generalMessages = {
         NO_TOKEN: "No token is provided",
         ROUTE_NOT_FOUND: "Route not found",
         REFRESH_TOKEN_NOT_FOUND: "You need to login again",
+        USER_NOT_FOUND: "User not found",
+        INVALID_CREDENTIAL: "Invalid credentials",
+        EMAIL_PASSWORD_REQUIRED: "Email and password are required",
     },
     INFO: {
         PROCESSING: "Your request is being processed",

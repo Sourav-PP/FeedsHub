@@ -3,6 +3,6 @@ import { CategoryController } from "../../presentation/controller/category/categ
 import { useCases } from "./use-case.di";
 
 export const controllers = {
-  authController: new AuthController(useCases.registerUserUseCase, useCases.refreshTokenUseCase),
+  authController: new AuthController(useCases.registerUserUseCase, useCases.loginUserUseCase, useCases.refreshTokenUseCase),
   categoryController: new CategoryController(useCases.getAllCategoriesUseCase),
 }
