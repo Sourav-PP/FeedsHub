@@ -1,0 +1,27 @@
+import { Router } from "express";
+import { RouteConst } from "../../shared/constant/routeConsts/route.constant";
+import { controllers } from "../../infrastructure/di/controller.di";
+import { middlewares } from "../../infrastructure/di/middleware.di";
+import { uploadSingle } from "../middleware/multer.middleware";
+import { validateCreateArticle } from "../validators/auth/middlewares/create-article.validator";
+import { requestLogger } from "../middleware/request-logger.middleware";
+
+export class ArticleRoutes {
+    public route: Router;
+
+    constructor() {
+        this.route = Router();
+        this.setRoute();
+    }
+
+    private setRoute(): void {
+        this.route.post(
+            RouteConst.ARTICLE.CREATE,
+            middlewares.auth,
+            uploadSingle,
+            requestLogger,
+            validateCreateArticle,
+            controllers.articleController.create,
+        );
+    }
+}

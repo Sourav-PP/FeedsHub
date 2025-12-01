@@ -5,6 +5,7 @@ import { config } from "../../shared/config.constant";
 import { errorHandler } from "../../presentation/middleware/error-handler.middleware";
 import { AuthRoutes } from "../../presentation/routes/auth.routes";
 import { CategoryRoutes } from "../../presentation/routes/category.routes";
+import { ArticleRoutes } from "../../presentation/routes/article.routes";
 
 export class Server {
     private _app: Application;
@@ -31,9 +32,11 @@ export class Server {
     private configureRoutes(): void {
         const authRoutes = new AuthRoutes();
         const categoryRoutes = new CategoryRoutes();
+        const articleRoutes = new ArticleRoutes();
 
         this._app.use("/api/auth", authRoutes.route);
         this._app.use("/api/categories", categoryRoutes.route);
+        this._app.use("/api/articles", articleRoutes.route);
     }
 
     private configureErrorHandling(): void {

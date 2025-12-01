@@ -3,4 +3,7 @@ export const frontendRoutes = {
     SIGNUP: '/signup',
     LOGIN: '/login',
   },
+  HOME: '/',
+  ARTICLES: '/my-articles',
+  SETTING: '/settings',
 } as const;
