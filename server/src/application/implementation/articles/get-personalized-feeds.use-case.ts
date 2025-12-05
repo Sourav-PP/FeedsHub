@@ -1,0 +1,52 @@
+import { HttpStatusCode } from "axios";
+import { IArticleRepository } from "../../../domain/repositoryInterfaces/article.repository.interface";
+import { IUserRepository } from "../../../domain/repositoryInterfaces/user.repository.interface";
+import { CustomError } from "../../../domain/utils/custom-error";
+import { generalMessages } from "../../../shared/constant/messages/general-messages.constant";
+import { IGetPersonalizedFeedsUseCase } from "../../interface/articles/get-personalized-feeds-use-case.interface";
+import { ICategoryRepository } from "../../../domain/repositoryInterfaces/category.repository.interface";
+import { Article } from "../../../domain/entities/article.entity";
+
+export class GetPersonalizedFeedsUseCase implements IGetPersonalizedFeedsUseCase {
+  private _userRepo: IUserRepository;
+  private _articleRepo: IArticleRepository;
+  private _categoryRepo: ICategoryRepository;
+
+  constructor(userRepo: IUserRepository, articleRepo: IArticleRepository, categoryRepo: ICategoryRepository) {
+    this._userRepo = userRepo;
+    this._articleRepo = articleRepo;
+    this._categoryRepo = categoryRepo;
+  }
+
+  async execute(userId: string, limit: number, skip: number): Promise<{ articles: Article[]; total: number }> {
+      const user = await this._userRepo.findById(userId);
+      if(!user) {
+        throw new CustomError(generalMessages.ERROR.USER_NOT_FOUND, HttpStatusCode.NotFound);
+      }
+
+      const categoryIds = user.preference
+      const categories = await this._categoryRepo.findAll();
+
+      const categoryNames = categories.map(c => c.name);
+
+      const searchParams = [...categoryIds, ...categoryNames];
+
+      let articles = await this._articleRepo.findPersonalizedFeed(searchParams, limit, skip);
+      let totalCount = await this._articleRepo.countAll();
+
+      let returnData = {
+        articles: articles,
+        total: totalCount
+      };
+
+      if(articles.length === 0) {
+        const articles = await this._articleRepo.findAllArticles(limit, skip);
+        returnData = {
+          articles: articles,
+          total: totalCount
+        };
+      }
+
+      return returnData;
+  }
+}

@@ -10,5 +10,9 @@ export const controllers = {
         useCases.refreshTokenUseCase,
     ),
     categoryController: new CategoryController(useCases.getAllCategoriesUseCase),
-    articleController: new ArticleController(useCases.createArticleUseCase),
+    articleController: new ArticleController(
+        useCases.createArticleUseCase,
+        useCases.getPersonalizedFeedsUseCase,
+        useCases.getArticleByIdUseCase,
+    ),
 };

@@ -5,12 +5,22 @@ import { ApiResponse } from "../../../shared/utils/response.util";
 import { ICreateArticleUseCase } from "../../../application/interface/articles/create-article-use-case.interface";
 import { CustomError } from "../../../domain/utils/custom-error";
 import { HttpStatusCode } from "axios";
+import { IGetPersonalizedFeedsUseCase } from "../../../application/interface/articles/get-personalized-feeds-use-case.interface";
+import { IGetArticleByIdUseCase } from "../../../application/interface/articles/get-article-by-id-use-case.interface";
 
 export class ArticleController {
     private _createArticleUseCase: ICreateArticleUseCase;
+    private _getPersonalizedFeedUseCase: IGetPersonalizedFeedsUseCase;
+    private _getArticleByIdUseCase: IGetArticleByIdUseCase;
 
-    constructor(createArticleUseCase: ICreateArticleUseCase) {
+    constructor(
+        createArticleUseCase: ICreateArticleUseCase,
+        getPersonalizedFeedUseCase: IGetPersonalizedFeedsUseCase,
+        getArticleByIdUseCase: IGetArticleByIdUseCase,
+    ) {
         this._createArticleUseCase = createArticleUseCase;
+        this._getPersonalizedFeedUseCase = getPersonalizedFeedUseCase;
+        this._getArticleByIdUseCase = getArticleByIdUseCase;
     }
 
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -23,19 +33,53 @@ export class ArticleController {
                 throw new CustomError(generalMessages.ERROR.IMAGE_REQUIRED, HttpStatusCode.BadRequest);
             }
 
-            if(!userId) {
-              throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
+            if (!userId) {
+                throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
             }
 
             const article = await this._createArticleUseCase.execute({
-              title,
-              description,
-              file,
-              category,
-              createdBy: userId,
-              tags
-            })
+                title,
+                description,
+                file,
+                category,
+                createdBy: userId,
+                tags,
+            });
             ApiResponse.success(res, article, generalMessages.SUCCESS.ARTICLE_CREATED);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    getPersonalizedFeed = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
+            }
+            const limit = parseInt(req.query.limit as string) || 10;
+            const page = parseInt(req.query.page as string) || 1;
+            const skip = (page - 1) * limit;
+
+            const articles = await this._getPersonalizedFeedUseCase.execute(userId, limit, skip);
+            ApiResponse.success(res, articles, generalMessages.SUCCESS.ARTICLES_FETCHED);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    getArticleById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
+            }
+            const articleId = req.params.articleId;
+            if (!articleId) {
+                throw new CustomError(generalMessages.ERROR.ARTICLE_ID_REQUIRED, HttpStatusCode.BadRequest);
+            }
+            const article = await this._getArticleByIdUseCase.execute(articleId);
+            ApiResponse.success(res, article, generalMessages.SUCCESS.ARTICLES_FETCHED);
         } catch (error) {
             next(error);
         }

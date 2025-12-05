@@ -1,16 +1,60 @@
-import { Link } from "react-router-dom"; // Assuming you're using React Router for navigation
+// src/pages/HomePage.tsx
+
+import { Link } from "react-router-dom";
 import HeroBg from '../../assets/images/hero-bg.jpg';
+import { usePersonalizedFeed } from "../../features/user/hooks/usePersonalizedFeeds";
+import { useEffect, useState } from "react";
+import type { IArticleDTO } from "../../types/dtos/article";
+
+import Pagination from "../../components/ui/Pagination";
+import ArticleCard from "../../components/ui/ArticleCard";
+
+
+// --- Loading Spinner Helper ---
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center h-48">
+      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+  </div>
+);
+
 const HomePage = () => {
+
+  // Using a limit of 9 for better visual layout (3 rows of 3)
+  const { articles, getFeed, loading, page, totalPages } = usePersonalizedFeed(9); 
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+
+  // --- Initial Data Fetch ---
+  useEffect(() => {
+    // Only run the initial fetch once
+    if (!initialLoadComplete) {
+      getFeed(1).then(() => {
+          setInitialLoadComplete(true);
+      });
+    }
+  }, [initialLoadComplete, getFeed]);
+
+  // --- Pagination Handler ---
+  const handlePageChange = (newPage: number) => {
+      // Check boundaries and loading state before fetching
+      if (newPage >= 1 && newPage <= totalPages && newPage !== page && !loading) {
+          getFeed(newPage);
+          // Scroll to the top of the article feed section
+          const feedSection = document.getElementById('article-feed-section');
+          if (feedSection) {
+              window.scrollTo({ top: feedSection.offsetTop - 100, behavior: 'smooth' });
+          }
+      }
+  };
 
   return (
     <div className="mx-auto px-14 py-28">
 
-      {/* Hero Section with Background Image */}
+      {/* --- Hero Section --- */}
       <section
         className="relative text-center py-32 bg-cover bg-center rounded-3xl overflow-hidden"
         style={{ backgroundImage: `url(${HeroBg})` }}
       >
-        {/* Overlay for better text readability */}
+        {/* Overlay for better text readability (using Tailwind classes instead of CSS styles) */}
         <div className="absolute inset-0 bg-black/40"></div>
         
         <div className="relative z-10">
@@ -23,7 +67,7 @@ const HomePage = () => {
 
           <div className="mt-10 flex justify-center gap-4">
             <Link
-              to="/dashboard" // Updated to dashboard assuming after login
+              to="/dashboard"
               className="px-8 py-4 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition duration-300 shadow-lg"
             >
               Explore Articles
@@ -38,48 +82,38 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Articles Section */}
-      <section className="mt-24">
-        <h2 className="text-4xl font-bold text-gray-900 mb-10 text-center">Featured Articles</h2>
+      {/* --- Dynamic Articles Section --- */}
+      <section id="article-feed-section" className="mt-24">
+        <h2 className="text-4xl font-bold text-gray-900 mb-10 text-center">Your Personalized Feed</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "How to Start Writing Effectively",
-              description: "Unlock your potential with proven strategies to overcome writer's block and craft compelling content.",
-              image: "https://source.unsplash.com/featured/?writing"
-            },
-            {
-              title: "Top 10 Productivity Tips",
-              description: "Boost your efficiency with these game-changing habits used by top performers worldwide.",
-              image: "https://source.unsplash.com/featured/?productivity"
-            },
-            {
-              title: "Why Reading Makes You Smarter",
-              description: "Discover the science behind how regular reading enhances cognitive abilities and expands your worldview.",
-              image: "https://source.unsplash.com/featured/?reading"
-            },
-          ].map((article, i) => (
-            <div
-              key={i}
-              className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 bg-white"
-            >
-              <img
-                src={article.image}
-                alt={article.title}
-                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="p-6">
-                <h3 className="font-bold text-xl text-gray-900 group-hover:text-blue-600 transition-colors">
-                  {article.title}
-                </h3>
-                <p className="text-sm text-gray-600 mt-3 line-clamp-3">
-                  {article.description}
-                </p>
-              </div>
+        {/* Conditional Rendering */}
+        {loading && <LoadingSpinner />}
+        
+        {!loading && articles.length === 0 && (
+            <div className="text-center py-12 text-gray-500 border rounded-lg">
+                <p className="text-lg">No articles found in your personalized feed.</p>
+                <p className="text-sm mt-2">Try adjusting your search terms or preferences.</p>
             </div>
-          ))}
-        </div>
+        )}
+
+        {/* Articles Grid (Using ArticleCard component) */}
+        {!loading && articles.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {articles.map((article) => (
+                    <ArticleCard key={article.id} article={article as IArticleDTO} />
+                ))}
+            </div>
+        )}
+        
+        {/* Pagination Component */}
+        {!loading && articles.length > 0 && totalPages > 1 && (
+            <Pagination 
+                currentPage={page} 
+                totalPages={totalPages} 
+                onPageChange={handlePageChange} 
+                loading={loading}
+            />
+        )}
       </section>
 
     </div>

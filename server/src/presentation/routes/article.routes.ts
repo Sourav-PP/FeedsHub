@@ -23,5 +23,16 @@ export class ArticleRoutes {
             validateCreateArticle,
             controllers.articleController.create,
         );
+        this.route.get(
+            RouteConst.ARTICLE.GET_PERSONALIZED,
+            middlewares.auth,
+            requestLogger,
+            controllers.articleController.getPersonalizedFeed
+        )
+        this.route.get(
+            RouteConst.ARTICLE.GET_BY_ID,
+            middlewares.auth,
+            controllers.articleController.getArticleById,
+        )
     }
 }

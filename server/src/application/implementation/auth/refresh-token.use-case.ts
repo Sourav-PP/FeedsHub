@@ -12,6 +12,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
   }
 
   async execute(refreshToken: string): Promise<{ accessToken: string; }> {
+      console.log('refreshToken triggered')
       const payload = this._jwtService.verifyRefreshToken(refreshToken);
       console.log(payload)
       if(!payload) {

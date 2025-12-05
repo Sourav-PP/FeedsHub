@@ -7,6 +7,7 @@ export const generalMessages = {
         CATEGORY_FETCHED: "Categories fetched successfully",
         TOKEN_REFRESHED: "Token refreshed successfully",
         ARTICLE_CREATED: "Article created successfully",
+        ARTICLES_FETCHED: "Article fetched successfully",
     },
     ERROR: {
         EMAIL_EXISTS: "User with this email already exists",
@@ -28,6 +29,7 @@ export const generalMessages = {
         INVALID_CREDENTIAL: "Invalid credentials",
         EMAIL_PASSWORD_REQUIRED: "Email and password are required",
         IMAGE_REQUIRED: "Image is required",
+        ARTICLE_ID_REQUIRED: "Article id is required",
     },
     INFO: {
         PROCESSING: "Your request is being processed",

@@ -10,8 +10,9 @@ export const RouteConst = {
     },
     ARTICLE: {
         GET_ALL: "/",
+        GET_PERSONALIZED: "/personalized",
         CREATE: "/",
-        GET_BY_ID: "/:id",
+        GET_BY_ID: "/:articleId",
         UPDATE_BY_ID: "/:id",
         DELETE_BY_ID: "/:id",
         GET_BY_CATEGORY_ID: "/category/:id",

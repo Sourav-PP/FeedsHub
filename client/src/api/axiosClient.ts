@@ -64,7 +64,7 @@ axiosClient.interceptors.response.use(
           {},
           { withCredentials: true },
         );
-        const newAccessToken = (refreshRes.data && refreshRes.data.accessToken) || null;
+        const newAccessToken = refreshRes.data?.data || null;
 
         if (!newAccessToken) throw new Error('please login to continue');
 

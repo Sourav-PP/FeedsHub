@@ -1,4 +1,6 @@
 import { CreateArticleUseCase } from "../../application/implementation/articles/create-article.use-case";
+import { GetArticleByIdUseCase } from "../../application/implementation/articles/get-article-by-id.use-case";
+import { GetPersonalizedFeedsUseCase } from "../../application/implementation/articles/get-personalized-feeds.use-case";
 import { LoginUserUseCase } from "../../application/implementation/auth/login-user.use-case";
 import { RefreshTokenUseCase } from "../../application/implementation/auth/refresh-token.use-case";
 import { RegisterUserUseCase } from "../../application/implementation/auth/register-user.use-case";
@@ -13,4 +15,10 @@ export const useCases = {
     refreshTokenUseCase: new RefreshTokenUseCase(services.jwtService),
     getAllCategoriesUseCase: new GetAllCategoriesUseCase(repositories.categoryRepository),
     createArticleUseCase: new CreateArticleUseCase(repositories.articleRepository, services.cloudinaryStorage),
+    getPersonalizedFeedsUseCase: new GetPersonalizedFeedsUseCase(
+        repositories.userRepository,
+        repositories.articleRepository,
+        repositories.categoryRepository,
+    ),
+    getArticleByIdUseCase: new GetArticleByIdUseCase(repositories.articleRepository, repositories.userRepository),
 };

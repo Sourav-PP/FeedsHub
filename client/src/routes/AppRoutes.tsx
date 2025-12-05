@@ -8,6 +8,7 @@ import ProtectedRoute from './ProtectedRoute';
 import HomePage from '../pages/user/HomePage';
 import MyArticlesPage from '../pages/user/MyArticlesPage';
 import CreateArticleForm from '../features/user/components/CreateArticleForm';
+import ArticleDetailsPage from '../pages/user/ArticleDetailsPage';
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
             <Route element={<MainLayout />}>
                 {/* These are the authenticated pages */}
                 <Route path={frontendRoutes.HOME} element={<HomePage />} />
+                <Route path={frontendRoutes.ARTICLE_DETAILS} element={<ArticleDetailsPage />} />
                 <Route path={frontendRoutes.ARTICLES} element={<MyArticlesPage />} />
                 <Route path={frontendRoutes.CREATE_ARTICLE} element={<CreateArticleForm />} />
             </Route>

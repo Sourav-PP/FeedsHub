@@ -1,3 +1,5 @@
 export const articleRoutes = {
-  create: '/articles'
+  create: '/articles',
+  getPersonalized: '/articles/personalized',
+  getDetails: '/articles/:articleId',
 } as const;

@@ -9,4 +9,11 @@ export interface ICreateArticleRequestData {
   category: string;
 }
 
+export interface IGetArticlesResponseData {
+  articles: IArticleDTO[];
+  total: number;
+}
+
 export type ICreateArticleResponse = ICommonResponse<IArticleDTO>;
+export type IGetArticlesResponse = ICommonResponse<IGetArticlesResponseData>;
+export type IGetArticleDetailsResponse = ICommonResponse<IArticleDTO>;
