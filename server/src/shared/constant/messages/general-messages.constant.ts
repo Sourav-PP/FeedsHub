@@ -3,6 +3,7 @@ export const generalMessages = {
         OPERATION_SUCCESS: "Operation completed successfully",
         REGISTRATION_SUCCESSFUL: "Registration is successful",
         LOGIN_SUCCESSFUL: "Login is successful",
+        LOGOUT_SUCCESSFUL: "Logout is successful",
         CATEGORY_FETCHED: "Categories fetched successfully",
         TOKEN_REFRESHED: "Token refreshed successfully",
         ARTICLE_CREATED: "Article created successfully",

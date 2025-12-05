@@ -66,7 +66,7 @@ axiosClient.interceptors.response.use(
         );
         const newAccessToken = (refreshRes.data && refreshRes.data.accessToken) || null;
 
-        if (!newAccessToken) throw new Error('No access token returned from refresh');
+        if (!newAccessToken) throw new Error('please login to continue');
 
         // update redux
         store.dispatch(setAccessToken(newAccessToken));

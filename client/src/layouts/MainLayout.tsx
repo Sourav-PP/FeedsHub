@@ -4,7 +4,7 @@ import Footer from "../components/ui/Footer";
 
 const MainLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900">
+    <div className="min-h-screen flex flex-col bg-linear-to-br from-emerald-50 via-amber-50 to-lime-50 text-gray-900">
       <Navbar />
       <main className="flex-1 pt-6">
         <Outlet />

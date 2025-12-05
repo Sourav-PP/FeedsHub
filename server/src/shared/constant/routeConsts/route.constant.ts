@@ -2,6 +2,7 @@ export const RouteConst = {
     AUTH: {
         REGISTER: "/register",
         LOGIN: "/login",
+        LOGOUT: "/logout",
         REFRESH: "/refresh"
     },
     CATEGORY: {

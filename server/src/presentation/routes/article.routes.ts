@@ -18,8 +18,8 @@ export class ArticleRoutes {
         this.route.post(
             RouteConst.ARTICLE.CREATE,
             middlewares.auth,
-            uploadSingle,
             requestLogger,
+            uploadSingle,
             validateCreateArticle,
             controllers.articleController.create,
         );

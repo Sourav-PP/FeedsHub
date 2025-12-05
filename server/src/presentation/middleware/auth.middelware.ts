@@ -6,9 +6,11 @@ import { HttpStatusCode } from "axios";
 
 export const authMiddleware = (jwtService: IJwtService) => (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log('is it here')
         const authHeader = req.headers.authorization;
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            console.log('iiii')
             throw new CustomError(generalMessages.ERROR.NO_TOKEN, HttpStatusCode.Unauthorized);
         }
 

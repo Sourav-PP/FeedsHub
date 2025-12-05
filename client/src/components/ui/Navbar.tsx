@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { frontendRoutes } from "../../constants/frontendRoutes";
-import { useDispatch } from "react-redux";
-import { clearAuth } from "../../app/slices/authSlice";
+import { useLogout } from "../../features/auth/hooks/useLogout";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { logout } = useLogout();
 
-  const handleLogout = () => {
-    dispatch(clearAuth());
-    navigate(frontendRoutes.AUTH.LOGIN);
+  const handleLogout = async () => {
+    const result = await logout();
+    if(result.success) {
+      toast.success(result.message);
+      navigate(frontendRoutes.AUTH.LOGIN);
+    } else {
+      toast.error(result.message);
+    }
   };
 
   return (

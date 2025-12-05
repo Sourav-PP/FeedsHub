@@ -30,6 +30,7 @@ const LoginForm = () => {
     if(result.success) {
       toast.success(result.message);
       reset();
+      navigate(frontendRoutes.HOME);
     } else {
       toast.error(result.message)
     }

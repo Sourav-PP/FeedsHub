@@ -1,5 +1,6 @@
 
 import { Link } from 'react-router-dom';
+import { frontendRoutes } from '../../constants/frontendRoutes';
 
 
 // Mock API function - replace with actual API call
@@ -57,7 +58,7 @@ const MyArticlesPage = () => {
       <div className="flex justify-between items-center mb-10">
         <h1 className="text-4xl font-bold text-gray-900">My Articles</h1>
         <Link
-          to="/create-article"
+          to={frontendRoutes.CREATE_ARTICLE}
           className="px-6 py-3 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition duration-300 shadow-md"
         >
           Create New Article

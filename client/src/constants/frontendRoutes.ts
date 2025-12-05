@@ -5,5 +5,6 @@ export const frontendRoutes = {
   },
   HOME: '/',
   ARTICLES: '/my-articles',
+  CREATE_ARTICLE: '/create-article',
   SETTING: '/settings',
 } as const;

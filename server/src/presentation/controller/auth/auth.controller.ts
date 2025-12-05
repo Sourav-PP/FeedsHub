@@ -73,6 +73,15 @@ export class AuthController {
         }
     };
 
+    logout = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            res.clearCookie("refreshToken");
+            ApiResponse.success(res, null, generalMessages.SUCCESS.LOGOUT_SUCCESSFUL);
+        } catch (error) {
+            next(error);
+        }
+    };
+
     tokenRefresh = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const refreshToken = req.cookies.refreshToken;

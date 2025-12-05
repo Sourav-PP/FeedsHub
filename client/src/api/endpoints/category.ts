@@ -1,17 +1,13 @@
-import type { AxiosError } from 'axios';
 import axiosClient from '../axiosClient';
-import { generalMessages } from '../../constants/generalMessages';
 import type { IGetCategoriesResponse } from '../../types/category';
 import { categoryRoutes } from '../routeConst/categoryRoutes';
+import { apiErrorHandler } from '../../utils/apiErrorHandler';
 
 export const fetchCategories = async (): Promise<IGetCategoriesResponse> => {
   try {
     const response = await axiosClient.get<IGetCategoriesResponse>(categoryRoutes.getAll);
     return response.data;
   } catch (error) {
-    const axiosError = error as AxiosError<{ message: string }>;
-    const message =
-      axiosError?.response?.data?.message || generalMessages.ERROR.INTERNAL_SERVER_ERROR;
-    throw new Error(message);
+    return apiErrorHandler(error);
   }
 }

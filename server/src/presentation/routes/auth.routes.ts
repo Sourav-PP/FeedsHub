@@ -15,6 +15,7 @@ export class AuthRoutes {
     private setRoute(): void {
         this.route.post(RouteConst.AUTH.REGISTER, validateRegisterUser, controllers.authController.register);
         this.route.post(RouteConst.AUTH.LOGIN, validateLoginUser, controllers.authController.login);
+        this.route.post(RouteConst.AUTH.LOGOUT, controllers.authController.logout);
         this.route.post(RouteConst.AUTH.REFRESH, controllers.authController.tokenRefresh);
     }
 }

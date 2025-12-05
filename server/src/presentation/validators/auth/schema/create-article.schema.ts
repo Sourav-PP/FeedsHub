@@ -1,8 +1,5 @@
-import parsePhoneNumberFromString from "libphonenumber-js";
 import { z } from "zod";
 
-const MAX_TAG_LENGTH = 50;
-const MAX_TAGS = 5;
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
