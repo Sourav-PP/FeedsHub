@@ -1,6 +1,8 @@
 import { CreateArticleUseCase } from "../../application/implementation/articles/create-article.use-case";
 import { GetArticleByIdUseCase } from "../../application/implementation/articles/get-article-by-id.use-case";
 import { GetPersonalizedFeedsUseCase } from "../../application/implementation/articles/get-personalized-feeds.use-case";
+import { ToggleLikeUseCase } from "../../application/implementation/articles/toggle-like.use-case";
+import { ToggleDislikeUseCase } from "../../application/implementation/articles/toggle.dislike.use-case";
 import { LoginUserUseCase } from "../../application/implementation/auth/login-user.use-case";
 import { RefreshTokenUseCase } from "../../application/implementation/auth/refresh-token.use-case";
 import { RegisterUserUseCase } from "../../application/implementation/auth/register-user.use-case";
@@ -21,4 +23,6 @@ export const useCases = {
         repositories.categoryRepository,
     ),
     getArticleByIdUseCase: new GetArticleByIdUseCase(repositories.articleRepository, repositories.userRepository),
+    toggleLikeUseCase: new ToggleLikeUseCase(repositories.userRepository, repositories.articleRepository),
+    toggleDislikeUseCase: new ToggleDislikeUseCase(repositories.userRepository, repositories.articleRepository),
 };

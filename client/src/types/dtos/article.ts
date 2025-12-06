@@ -9,6 +9,9 @@ export interface IArticleDTO {
   likes: number;
   dislikes: number;
   blocks: number;
+  likedBy?: string[];
+  dislikedBy?: string[];
+  blockedBy?: string[];
   createdAt: string;
   updatedAt: string;
 }

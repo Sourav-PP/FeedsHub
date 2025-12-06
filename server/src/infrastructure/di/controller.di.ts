@@ -14,5 +14,7 @@ export const controllers = {
         useCases.createArticleUseCase,
         useCases.getPersonalizedFeedsUseCase,
         useCases.getArticleByIdUseCase,
+        useCases.toggleLikeUseCase,
+        useCases.toggleDislikeUseCase,
     ),
 };

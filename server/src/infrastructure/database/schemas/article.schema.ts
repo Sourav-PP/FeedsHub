@@ -1,5 +1,6 @@
 import { Schema } from "mongoose";
 import { IArticleModel } from "../models/article.model";
+import { de } from "zod/v4/locales";
 
 export const articleSchema = new Schema<IArticleModel>(
     {
@@ -43,6 +44,24 @@ export const articleSchema = new Schema<IArticleModel>(
             type: Number,
             default: 0,
         },
+        likedBy: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
+        dislikedBy: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
+        blockedBy: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
     },
     { timestamps: true },
 );

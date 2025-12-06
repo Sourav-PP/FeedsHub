@@ -17,8 +17,8 @@ export const RouteConst = {
         DELETE_BY_ID: "/:id",
         GET_BY_CATEGORY_ID: "/category/:id",
         GET_BY_USER_ID: "/user/:id",
-        LIKE: "/like/:id",
-        DISLIKE: "/dislike/:id",
-        BLOCK: "/block/:id",
+        LIKE: "/:articleId/like",
+        DISLIKE: "/:articleId/dislike",
+        BLOCK: "/:articleId/block",
     }
 } as const;

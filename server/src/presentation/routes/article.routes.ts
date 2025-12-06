@@ -34,5 +34,17 @@ export class ArticleRoutes {
             middlewares.auth,
             controllers.articleController.getArticleById,
         )
+        this.route.post(
+            RouteConst.ARTICLE.LIKE,
+            middlewares.auth,
+            requestLogger,
+            controllers.articleController.like,
+        )
+        this.route.post(
+            RouteConst.ARTICLE.DISLIKE,
+            middlewares.auth,
+            requestLogger,
+            controllers.articleController.dislike,
+        )
     }
 }

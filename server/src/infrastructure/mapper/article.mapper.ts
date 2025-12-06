@@ -17,6 +17,9 @@ export class ArticleMapper {
             likes: doc.likes,
             dislikes: doc.dislikes,
             blocks: doc.blocks,
+            likedBy: doc.likedBy.map(l => l.toString()),
+            dislikedBy: doc.dislikedBy.map(d => d.toString()),
+            blockedBy: doc.blockedBy.map(b => b.toString()),
             createdAt: doc.createdAt,
             updatedAt: doc.updatedAt,
         };
@@ -34,6 +37,9 @@ export class ArticleMapper {
         if (doc.likes !== undefined) model.likes = doc.likes;
         if (doc.dislikes !== undefined) model.dislikes = doc.dislikes;
         if (doc.blocks !== undefined) model.blocks = doc.blocks;
+        if (doc.likedBy !== undefined) model.likedBy = doc.likedBy.map(l => new Types.ObjectId(l));
+        if (doc.dislikedBy !== undefined) model.dislikedBy = doc.dislikedBy.map(d => new Types.ObjectId(d));
+        if (doc.blockedBy !== undefined) model.blockedBy = doc.blockedBy.map(b => new Types.ObjectId(b));
         if (doc.createdAt !== undefined) model.createdAt = doc.createdAt;
         if (doc.updatedAt !== undefined) model.updatedAt = doc.updatedAt;
 

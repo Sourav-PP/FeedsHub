@@ -3,7 +3,7 @@ import { IBaseRepository } from "../../domain/repositoryInterfaces/base-reposito
 
 export abstract class BaseRepository<TDomain, TDocument extends Document> implements IBaseRepository<TDomain> {
     private _model: Model<TDocument>;
-    private _toDomain: (doc: TDocument) => TDomain;
+    protected _toDomain: (doc: TDocument) => TDomain;
     private _toModel: (data: Partial<TDomain>) => Partial<TDocument>;
     protected _toDomainArray(docs: TDocument[]): TDomain[] {
         return docs.map(d => this._toDomain(d));

@@ -9,6 +9,9 @@ export interface Article {
   likes?: number;
   dislikes?: number;
   blocks?: number;
+  likedBy?: string[];
+  dislikedBy?: string[];
+  blockedBy?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }

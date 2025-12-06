@@ -12,6 +12,9 @@ export interface IArticleModel extends Document {
     likes: number;
     dislikes: number;
     blocks: number;
+    likedBy: Types.ObjectId[];
+    dislikedBy: Types.ObjectId[];
+    blockedBy: Types.ObjectId[];
     createdAt?: Date;
     updatedAt?: Date;
 }

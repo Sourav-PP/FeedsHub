@@ -7,20 +7,28 @@ import { CustomError } from "../../../domain/utils/custom-error";
 import { HttpStatusCode } from "axios";
 import { IGetPersonalizedFeedsUseCase } from "../../../application/interface/articles/get-personalized-feeds-use-case.interface";
 import { IGetArticleByIdUseCase } from "../../../application/interface/articles/get-article-by-id-use-case.interface";
+import { IToggleLikeUseCase } from "../../../application/interface/articles/toggle-like-use-case.interface";
+import { IToggleDislikeUseCase } from "../../../application/interface/articles/toggle-dislike-use-case.interface";
 
 export class ArticleController {
     private _createArticleUseCase: ICreateArticleUseCase;
     private _getPersonalizedFeedUseCase: IGetPersonalizedFeedsUseCase;
     private _getArticleByIdUseCase: IGetArticleByIdUseCase;
+    private _toggleLikeUseCase: IToggleLikeUseCase;
+    private _toggleDislikeUseCase: IToggleDislikeUseCase;
 
     constructor(
         createArticleUseCase: ICreateArticleUseCase,
         getPersonalizedFeedUseCase: IGetPersonalizedFeedsUseCase,
         getArticleByIdUseCase: IGetArticleByIdUseCase,
+        toggleLikeUseCase: IToggleLikeUseCase,
+        toggleDislikeUseCase: IToggleDislikeUseCase,
     ) {
         this._createArticleUseCase = createArticleUseCase;
         this._getPersonalizedFeedUseCase = getPersonalizedFeedUseCase;
         this._getArticleByIdUseCase = getArticleByIdUseCase;
+        this._toggleLikeUseCase = toggleLikeUseCase;
+        this._toggleDislikeUseCase = toggleDislikeUseCase;
     }
 
     create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -84,4 +92,42 @@ export class ArticleController {
             next(error);
         }
     };
+
+    like = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
+            }
+
+            const articleId = req.params.articleId;
+            if (!articleId) {
+                throw new CustomError(generalMessages.ERROR.ARTICLE_ID_REQUIRED, HttpStatusCode.BadRequest);
+            }
+
+            const article = await this._toggleLikeUseCase.execute(userId, articleId);
+            ApiResponse.success(res, article, generalMessages.SUCCESS.LIKED);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    dislike = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const userId = req.user?.id;
+            if (!userId) {
+                throw new CustomError(generalMessages.ERROR.UNAUTHORIZED, HttpStatusCode.Unauthorized);
+            }
+
+            const articleId = req.params.articleId;
+            if (!articleId) {
+                throw new CustomError(generalMessages.ERROR.ARTICLE_ID_REQUIRED, HttpStatusCode.BadRequest);
+            }
+
+            const article = await this._toggleDislikeUseCase.execute(userId, articleId); 
+            ApiResponse.success(res, article, generalMessages.SUCCESS.DISLIKED);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

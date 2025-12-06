@@ -24,5 +24,5 @@ export const useArticleDetails = () => {
     }
   }, []);
 
-  return { article, loading, getArticle };
+  return { article, loading, getArticle, setArticle };
 };

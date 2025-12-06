@@ -44,3 +44,40 @@ export const fetchArticleDetails = async (
     return apiErrorHandler<IArticleDTO>(error);
   }
 };
+
+// --- LIKE ARTICLE ---
+export const likeArticle = async (articleId: string) => {
+  try {
+    const response = await axiosClient.post(
+      articleRoutes.like.replace(":articleId", articleId)
+    );
+    return response.data;
+  } catch (error) {
+    return apiErrorHandler(error);
+  }
+};
+
+// --- DISLIKE ARTICLE ---
+export const dislikeArticle = async (articleId: string) => {
+  try {
+    const response = await axiosClient.post(
+      articleRoutes.dislike.replace(":articleId", articleId)
+    );
+    return response.data;
+  } catch (error) {
+    return apiErrorHandler(error);
+  }
+};
+
+// --- BLOCK ARTICLE ---
+export const blockArticle = async (articleId: string) => {
+  try {
+    const response = await axiosClient.post(
+      articleRoutes.block.replace(":articleId", articleId)
+    );
+    return response.data;
+  } catch (error) {
+    return apiErrorHandler(error);
+  }
+};
+

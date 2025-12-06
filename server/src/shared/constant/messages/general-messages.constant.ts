@@ -8,6 +8,9 @@ export const generalMessages = {
         TOKEN_REFRESHED: "Token refreshed successfully",
         ARTICLE_CREATED: "Article created successfully",
         ARTICLES_FETCHED: "Article fetched successfully",
+        LIKED: "Article liked successfully",
+        DISLIKED: "Article disliked successfully",
+        BLOCKED_ARTICLE: "Article blocked successfully",
     },
     ERROR: {
         EMAIL_EXISTS: "User with this email already exists",
@@ -30,6 +33,7 @@ export const generalMessages = {
         EMAIL_PASSWORD_REQUIRED: "Email and password are required",
         IMAGE_REQUIRED: "Image is required",
         ARTICLE_ID_REQUIRED: "Article id is required",
+        ARTICLE_NOT_FOUND: "Article not found",
     },
     INFO: {
         PROCESSING: "Your request is being processed",

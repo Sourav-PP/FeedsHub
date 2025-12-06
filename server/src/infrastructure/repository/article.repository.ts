@@ -15,6 +15,11 @@ export class ArticleRepository extends BaseRepository<Article, IArticleModel> im
         return this._toDomainArray(docs);
     }
 
+    async update(article: Partial<Article>): Promise<Article | null> {
+        const doc = await ArticleModel.findByIdAndUpdate(article.id, article, { new: true });
+        return doc ? this._toDomain(doc) : null;
+        
+    }
     async findAllArticles(limit: number, skip: number): Promise<Article[]> {
         const docs = await ArticleModel.find().sort({ createdAt: -1 }).limit(limit).skip(skip).exec();
         return this._toDomainArray(docs);
@@ -40,5 +45,5 @@ export class ArticleRepository extends BaseRepository<Article, IArticleModel> im
 
     async countAll(): Promise<number> {
         return await ArticleModel.countDocuments();
-    }
+    };
 }
