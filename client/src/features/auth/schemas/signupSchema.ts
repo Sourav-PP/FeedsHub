@@ -28,6 +28,7 @@ export const signupSchema = z.object({
     })
     .refine(
       (value) => {
+        console.log('value:', value);
         const phone = parsePhoneNumberFromString(value);
         return phone?.isValid() === true;
       },

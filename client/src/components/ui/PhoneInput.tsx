@@ -21,7 +21,7 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({ control, name, label,
         <PhoneInput
           country="in"
           value={field.value}
-          onChange={field.onChange}
+          onChange={(value) => field.onChange(value.startsWith('+') ? value : `+${value}`)}
           inputProps={{
             name: field.name,
             required: true,
