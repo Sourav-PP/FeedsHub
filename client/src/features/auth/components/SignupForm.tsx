@@ -98,7 +98,7 @@ const SignupForm = () => {
         <CheckboxGroup
           label="Select Categories"
           options={categoryOptions} // { label, value }[]
-          register={register}
+          control={control}
           name="preference"
           error={preferenceError}
         />

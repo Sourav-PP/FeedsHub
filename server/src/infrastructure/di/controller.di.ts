@@ -8,6 +8,9 @@ export const controllers = {
         useCases.registerUserUseCase,
         useCases.loginUserUseCase,
         useCases.refreshTokenUseCase,
+        useCases.updateProfileUseCase,
+        useCases.changePasswordUseCase,
+        useCases.getProfileUseCase,
     ),
     categoryController: new CategoryController(useCases.getAllCategoriesUseCase),
     articleController: new ArticleController(
@@ -16,5 +19,9 @@ export const controllers = {
         useCases.getArticleByIdUseCase,
         useCases.toggleLikeUseCase,
         useCases.toggleDislikeUseCase,
+        useCases.getArticleByUserIdUseCase,
+        useCases.editArticleUseCase,
+        useCases.deleteArticleUseCase,
+        useCases.toggleBlockUseCase,
     ),
 };

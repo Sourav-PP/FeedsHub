@@ -20,4 +20,18 @@ export interface ILoginRequestData {
   password: string;
 }
 
+export interface IChangePasswordDTO {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface IUpdateProfileDTO {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  dob: string;
+  preference?: string[];
+}
+
 export type ISignupResponse = ICommonResponse<ISignupResponseData>;
+export type IFetchProfileResponse = ICommonResponse<IUserDTO>;

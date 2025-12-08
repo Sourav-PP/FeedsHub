@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { likeArticle, dislikeArticle, blockArticle } from "../../../api/endpoints/article";
-import type { IArticleDTO } from "../../../types/dtos/article";
-import toast from "react-hot-toast";
+import { useState } from 'react';
+import { likeArticle, dislikeArticle, blockArticle } from '../../../api/endpoints/article';
+import type { IArticleDTO } from '../../../types/dtos/article';
+import toast from 'react-hot-toast';
 
 export const useArticleReactions = (
   article: IArticleDTO,
   setArticle: (updated: IArticleDTO) => void,
-  userId?: string 
+  userId?: string,
 ) => {
   const [loading, setLoading] = useState(false);
 
-  const handleReaction = async (type: "like" | "dislike" | "block") => {
+  const handleReaction = async (type: 'like' | 'dislike' | 'block') => {
     if (loading) return;
 
     if (!userId) {
-      toast.error("You must be logged in to react to an article.");
-      return; // Stop execution if userId is not present
+      toast.error('You must be logged in to react to an article.');
+      return;
     }
 
     setLoading(true);
 
-    const updated: IArticleDTO  = { ...article };
+    const updated: IArticleDTO = { ...article };
 
     // --- helpers ---
     const liked = updated.likedBy?.includes(userId) ?? false;
@@ -29,38 +29,36 @@ export const useArticleReactions = (
 
     try {
       // ---------------- LIKE ----------------
-      if (type === "like") {
+      if (type === 'like') {
         if (liked) {
-          // remove like
-          updated.likedBy = updated.likedBy!.filter(id => id !== userId);
+          updated.likedBy = updated.likedBy!.filter((id) => id !== userId);
           updated.likes--;
         } else {
-          // add like
           updated.likedBy = [...(updated.likedBy || []), userId];
           updated.likes++;
 
           // remove dislike if it was active
           if (disliked) {
-            updated.dislikedBy = updated.dislikedBy!.filter(id => id !== userId);
+            updated.dislikedBy = updated.dislikedBy!.filter((id) => id !== userId);
             updated.dislikes--;
           }
         }
 
-        setArticle(updated);        // instant UI update
-        await likeArticle(article.id); // backend sync
+        setArticle(updated);
+        await likeArticle(article.id);
       }
 
       // ---------------- DISLIKE ----------------
-      if (type === "dislike") {
+      if (type === 'dislike') {
         if (disliked) {
-          updated.dislikedBy = updated.dislikedBy!.filter(id => id !== userId);
+          updated.dislikedBy = updated.dislikedBy!.filter((id) => id !== userId);
           updated.dislikes--;
         } else {
           updated.dislikedBy = [...(updated.dislikedBy || []), userId];
           updated.dislikes++;
 
           if (liked) {
-            updated.likedBy = updated.likedBy!.filter(id => id !== userId);
+            updated.likedBy = updated.likedBy!.filter((id) => id !== userId);
             updated.likes--;
           }
         }
@@ -70,9 +68,9 @@ export const useArticleReactions = (
       }
 
       // ---------------- BLOCK ----------------
-      if (type === "block") {
+      if (type === 'block') {
         if (blocked) {
-          updated.blockedBy = updated.blockedBy!.filter(id => id !== userId);
+          updated.blockedBy = updated.blockedBy!.filter((id) => id !== userId);
           updated.blocks--;
         } else {
           updated.blockedBy = [...(updated.blockedBy || []), userId];
@@ -82,9 +80,8 @@ export const useArticleReactions = (
         setArticle(updated);
         await blockArticle(article.id);
       }
-
     } catch (err) {
-      console.error("Reaction update failed:", err);
+      console.error('Reaction update failed:', err);
     } finally {
       setLoading(false);
     }

@@ -4,16 +4,28 @@ import { type FieldError } from 'react-hook-form';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: FieldError;
+  wrapperClassName?: string;
 }
 
-const Input: React.FC<InputProps> = ({ label, error, placeholder, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, error, placeholder, className, wrapperClassName,  ...props }) => {
+  const inputClasses = `
+    w-full 
+    rounded-xl 
+    bg-gray-200/60 
+    px-3 
+    py-2 
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-blue-400/50 
+    ${error ? 'border border-red-500' : 'border border-gray-300'}
+    ${className || ''} // Append any extra classes passed in
+  `.trim();
+
   return (
-    <div className="flex flex-col">
+    <div className={`flex flex-col ${wrapperClassName || ''}`}>
       {label && <label className="mb-1 font-medium text-gray-700">{label}</label>}
       <input
-        className={`w-full rounded-xl bg-gray-200/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400/50 ${
-          error ? 'border-red-500' : 'border-gray-300'
-        }`}
+        className={inputClasses}
         placeholder={placeholder}
         {...props}
       />

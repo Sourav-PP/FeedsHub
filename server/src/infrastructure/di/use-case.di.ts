@@ -1,11 +1,18 @@
 import { CreateArticleUseCase } from "../../application/implementation/articles/create-article.use-case";
+import { DeleteArticleUseCase } from "../../application/implementation/articles/delete-article.use-case";
+import { EditArticleUseCase } from "../../application/implementation/articles/edit-article.use-case";
 import { GetArticleByIdUseCase } from "../../application/implementation/articles/get-article-by-id.use-case";
+import { GetArticleByUserIdUseCase } from "../../application/implementation/articles/get-article-by-user-id.use-case";
 import { GetPersonalizedFeedsUseCase } from "../../application/implementation/articles/get-personalized-feeds.use-case";
+import { ToggleBlockUseCase } from "../../application/implementation/articles/toggle-block.use-case";
 import { ToggleLikeUseCase } from "../../application/implementation/articles/toggle-like.use-case";
 import { ToggleDislikeUseCase } from "../../application/implementation/articles/toggle.dislike.use-case";
+import { ChangePasswordUseCase } from "../../application/implementation/auth/change-password.use-case";
+import { GetProfileUseCase } from "../../application/implementation/auth/get-profile.use-case";
 import { LoginUserUseCase } from "../../application/implementation/auth/login-user.use-case";
 import { RefreshTokenUseCase } from "../../application/implementation/auth/refresh-token.use-case";
 import { RegisterUserUseCase } from "../../application/implementation/auth/register-user.use-case";
+import { UpdateProfileUseCase } from "../../application/implementation/auth/update-profile.use-case";
 import { GetAllCategoriesUseCase } from "../../application/implementation/category/get-all-categories.use-case";
 
 import { repositories } from "./repository.di";
@@ -23,6 +30,13 @@ export const useCases = {
         repositories.categoryRepository,
     ),
     getArticleByIdUseCase: new GetArticleByIdUseCase(repositories.articleRepository, repositories.userRepository),
+    getArticleByUserIdUseCase: new GetArticleByUserIdUseCase(repositories.articleRepository, repositories.userRepository),
     toggleLikeUseCase: new ToggleLikeUseCase(repositories.userRepository, repositories.articleRepository),
     toggleDislikeUseCase: new ToggleDislikeUseCase(repositories.userRepository, repositories.articleRepository),
+    toggleBlockUseCase: new ToggleBlockUseCase(repositories.userRepository, repositories.articleRepository),
+    editArticleUseCase: new EditArticleUseCase(repositories.articleRepository, repositories.userRepository, services.cloudinaryStorage),
+    deleteArticleUseCase: new DeleteArticleUseCase(repositories.articleRepository),
+    updateProfileUseCase: new UpdateProfileUseCase(repositories.userRepository),
+    changePasswordUseCase: new ChangePasswordUseCase(repositories.userRepository, services.bcrypt),
+    getProfileUseCase: new GetProfileUseCase(repositories.userRepository),
 };

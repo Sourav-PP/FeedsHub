@@ -15,3 +15,16 @@ export interface ILoginResponseDTO {
     accessToken: string;
     refreshToken: string;
 }
+
+export interface IUpdateUserDTO {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    dob: Date;
+    preference?: string[];
+}
+
+export interface IChangePasswordDTO {
+    currentPassword: string;
+    newPassword: string;
+}

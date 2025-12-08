@@ -1,26 +1,16 @@
 // src/pages/user/ArticleDetailsPage.tsx
 
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useArticleDetails } from '../../features/user/hooks/useArticleDetails';
 import { FiThumbsUp, FiThumbsDown, FiEyeOff } from 'react-icons/fi';
 import { useArticleReactions } from '../../features/user/hooks/useArticleReactions';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store';
-import toast from 'react-hot-toast';
 
 const ArticleDetailsPage: React.FC = () => {
-  // 1. Hook and Route Setup
   const { articleId } = useParams<{ articleId: string }>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-  if (!user) {
-    toast.error("You must be logged in to view this page.");
-    navigate("/login");
-  }
-}, [user, navigate]);
 
   const userId = user?.id;
   const { article, loading, getArticle, setArticle } = useArticleDetails();
@@ -105,23 +95,26 @@ const ArticleDetailsPage: React.FC = () => {
 
           {/* Interactive Buttons (Placeholder) */}
           <div className="flex space-x-3">
-            <button 
+            <button
               disabled={reacting}
               onClick={() => handleReaction('like')}
-              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-full hover:bg-blue-600 transition duration-150 shadow-md">
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-full hover:bg-blue-600 transition duration-150 shadow-md"
+            >
               <FiThumbsUp className="mr-2" />
               Like
             </button>
             <button
               disabled={reacting}
-              onClick={() => handleReaction("dislike")}
-              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-full hover:bg-red-600 transition duration-150 shadow-md">
+              onClick={() => handleReaction('dislike')}
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-full hover:bg-red-600 transition duration-150 shadow-md"
+            >
               <FiThumbsDown className="mr-2" /> Dislike
             </button>
             <button
               disabled={reacting}
-              onClick={() => handleReaction("block")}
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-150 shadow-md">
+              onClick={() => handleReaction('block')}
+              className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-150 shadow-md"
+            >
               <FiEyeOff className="mr-2" /> Block
             </button>
           </div>

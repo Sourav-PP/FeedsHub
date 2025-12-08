@@ -15,5 +15,6 @@ export interface IGetArticlesResponseData {
 }
 
 export type ICreateArticleResponse = ICommonResponse<IArticleDTO>;
+export type IEditArticleResponse = ICommonResponse<IArticleDTO>;
 export type IGetArticlesResponse = ICommonResponse<IGetArticlesResponseData>;
 export type IGetArticleDetailsResponse = ICommonResponse<IArticleDTO>;

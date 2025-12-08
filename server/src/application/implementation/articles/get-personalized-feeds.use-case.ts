@@ -31,8 +31,8 @@ export class GetPersonalizedFeedsUseCase implements IGetPersonalizedFeedsUseCase
 
       const searchParams = [...categoryIds, ...categoryNames];
 
-      let articles = await this._articleRepo.findPersonalizedFeed(searchParams, limit, skip);
-      let totalCount = await this._articleRepo.countAll();
+      let articles = await this._articleRepo.findPersonalizedFeed(userId,searchParams, limit, skip);
+      let totalCount = await this._articleRepo.countAll(userId);
 
       let returnData = {
         articles: articles,
@@ -40,7 +40,7 @@ export class GetPersonalizedFeedsUseCase implements IGetPersonalizedFeedsUseCase
       };
 
       if(articles.length === 0) {
-        const articles = await this._articleRepo.findAllArticles(limit, skip);
+        const articles = await this._articleRepo.findAllArticles(userId, limit, skip);
         returnData = {
           articles: articles,
           total: totalCount

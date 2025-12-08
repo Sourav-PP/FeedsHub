@@ -16,3 +16,15 @@ export function toLoginResponseDTO(user: User, accessToken: string, refreshToken
         refreshToken,
     };
 }
+
+export function toUserResponseDTO(user: User) {
+    return {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        email: user.email,
+        dob: user.dob,
+        preference: user.preference,
+    }
+}

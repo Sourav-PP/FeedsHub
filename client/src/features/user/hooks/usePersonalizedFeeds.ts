@@ -1,5 +1,3 @@
-// src/hooks/usePersonalizedFeed.ts
-
 import { generalMessages } from '../../../constants/generalMessages';
 import type { IArticleDTO } from '../../../types/dtos/article';
 import { useCallback, useState } from 'react';

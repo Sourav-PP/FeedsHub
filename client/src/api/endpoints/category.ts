@@ -10,4 +10,4 @@ export const fetchCategories = async (): Promise<IGetCategoriesResponse> => {
   } catch (error) {
     return apiErrorHandler(error);
   }
-}
+};

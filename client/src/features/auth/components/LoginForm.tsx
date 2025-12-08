@@ -1,4 +1,4 @@
-import { useLogin } from '../hooks/useLogin'
+import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { type LoginFormValues, loginSchema } from '../schemas/loginSchema';
@@ -21,20 +21,20 @@ const LoginForm = () => {
     defaultValues: {
       email: '',
       password: '',
-    }
-  })
+    },
+  });
 
   const onSubmit = async (data: LoginFormValues) => {
     const result = await login(data);
 
-    if(result.success) {
+    if (result.success) {
       toast.success(result.message);
       reset();
       navigate(frontendRoutes.HOME);
     } else {
-      toast.error(result.message)
+      toast.error(result.message);
     }
-  }
+  };
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-md">
       <h2 className="text-3xl font-bold text-center">Welcome Back</h2>
@@ -77,7 +77,7 @@ const LoginForm = () => {
         </p>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

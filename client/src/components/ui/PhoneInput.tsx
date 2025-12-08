@@ -29,15 +29,15 @@ const PhoneInputField: React.FC<PhoneInputFieldProps> = ({ control, name, label,
           containerStyle={{ width: '100%' }}
           inputStyle={{
             width: '100%',
-            backgroundColor: '#e5e7eb99', // matches bg-gray-200/60
-            padding: '1.25rem 3rem', // px-3 py-2
+            backgroundColor: '#e5e7eb99', 
+            padding: '1.25rem 3rem',
             border: 'none',
             borderRadius: '0.6rem',
             outline: 'none',
             fontSize: '1rem',
           }}
           buttonStyle={{
-            borderRadius: '0.6rem 0 0 0.6rem', // rounded-l-xl
+            borderRadius: '0.6rem 0 0 0.6rem',
             border: '1px solid #d1d5db',
             backgroundColor: '#e5e7eb99',
           }}

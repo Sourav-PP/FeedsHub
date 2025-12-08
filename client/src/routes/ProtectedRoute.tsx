@@ -11,6 +11,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isGuestRoute }) => {
   const isAuthenticated = useSelector((state: RootState) => 
     !!state.auth.accessToken
   );
+  console.log('isAuthenticated', isAuthenticated);
   
   // navigation paths
   const HOME_PATH = "/"; 

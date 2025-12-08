@@ -1,8 +1,8 @@
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../../api/endpoints/auth";
-import type { ILoginRequestData } from "../../../types/auth";
-import { setAccessToken, setError, setLoading, setUser } from "../../../app/slices/authSlice";
-import { generalMessages } from "../../../constants/generalMessages";
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../api/endpoints/auth';
+import type { ILoginRequestData } from '../../../types/auth';
+import { setAccessToken, setError, setLoading, setUser } from '../../../app/slices/authSlice';
+import { generalMessages } from '../../../constants/generalMessages';
 
 export const useLogin = () => {
   const dispatch = useDispatch();

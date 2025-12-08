@@ -10,8 +10,8 @@ export class ArticleRepository extends BaseRepository<Article, IArticleModel> im
         super(ArticleModel, ArticleMapper.toDomain, ArticleMapper.toModel);
     }
 
-    async findByUserId(userId: string): Promise<Article[]> {
-        const docs = await ArticleModel.find({ createdBy: userId });
+    async findByUserId(userId: string, limit: number, skip: number): Promise<Article[]> {
+        const docs = await ArticleModel.find({ createdBy: new mongoose.Types.ObjectId(userId) }).sort({ createdAt: -1 }).limit(limit).skip(skip).exec();;
         return this._toDomainArray(docs);
     }
 
@@ -20,12 +20,15 @@ export class ArticleRepository extends BaseRepository<Article, IArticleModel> im
         return doc ? this._toDomain(doc) : null;
         
     }
-    async findAllArticles(limit: number, skip: number): Promise<Article[]> {
-        const docs = await ArticleModel.find().sort({ createdAt: -1 }).limit(limit).skip(skip).exec();
+    async findAllArticles(userId: string, limit: number, skip: number): Promise<Article[]> {
+        const blockFilter = {
+            blockedBy: { $nin: [userId] }
+        };
+        const docs = await ArticleModel.find(blockFilter).sort({ createdAt: -1 }).limit(limit).skip(skip).exec();
         return this._toDomainArray(docs);
     }
 
-    async findPersonalizedFeed(searchTerms: string[], limit: number, skip: number): Promise<Article[]> {
+    async findPersonalizedFeed(userId: string, searchTerms: string[], limit: number, skip: number): Promise<Article[]> {
         const objectIds = searchTerms
             .filter(term => mongoose.Types.ObjectId.isValid(term))
             .map(term => new mongoose.Types.ObjectId(term));
@@ -39,11 +42,25 @@ export class ArticleRepository extends BaseRepository<Article, IArticleModel> im
             ]
         }
 
-        const docs = await ArticleModel.find(query).sort({ createdAt: -1 }).limit(limit).skip(skip).exec();
+        const blockFilter = {
+            blockedBy: { $nin: [userId] }
+        };
+
+        const finalQuery = {
+            $and: [
+                query,
+                blockFilter
+            ]
+        };
+
+        const docs = await ArticleModel.find(finalQuery).sort({ createdAt: -1 }).limit(limit).skip(skip).exec();
         return this._toDomainArray(docs);
     }
 
-    async countAll(): Promise<number> {
-        return await ArticleModel.countDocuments();
+    async countAll(userId: string): Promise<number> {
+        const blockFilter = {
+            blockedBy: { $nin: [userId] }
+        };
+        return await ArticleModel.countDocuments(blockFilter);
     };
 }

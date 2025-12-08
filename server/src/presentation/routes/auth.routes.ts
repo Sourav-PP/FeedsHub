@@ -3,6 +3,7 @@ import { RouteConst } from "../../shared/constant/routeConsts/route.constant";
 import { controllers } from "../../infrastructure/di/controller.di";
 import { validateRegisterUser } from "../validators/auth/middlewares/register-user.validator";
 import { validateLoginUser } from "../validators/auth/middlewares/login-user.validator";
+import { middlewares } from "../../infrastructure/di/middleware.di";
 
 export class AuthRoutes {
     public route: Router;
@@ -17,5 +18,8 @@ export class AuthRoutes {
         this.route.post(RouteConst.AUTH.LOGIN, validateLoginUser, controllers.authController.login);
         this.route.post(RouteConst.AUTH.LOGOUT, controllers.authController.logout);
         this.route.post(RouteConst.AUTH.REFRESH, controllers.authController.tokenRefresh);
+        this.route.put(RouteConst.AUTH.UPDATE_PROFILE, middlewares.auth, controllers.authController.updateProfile);
+        this.route.put(RouteConst.AUTH.CHANGE_PASSWORD, middlewares.auth, controllers.authController.changePassword);
+        this.route.get(RouteConst.AUTH.FETCH_PROFILE, middlewares.auth, controllers.authController.getProfile);
     }
 }
