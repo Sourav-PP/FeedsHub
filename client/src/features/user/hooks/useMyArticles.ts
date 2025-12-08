@@ -1,7 +1,7 @@
 import { generalMessages } from '../../../constants/generalMessages';
 import type { IArticleDTO } from '../../../types/dtos/article';
 import { useCallback, useState } from 'react';
-import { fetchPersonalizedFeed } from '../../../api/endpoints/article';
+import { fetchArticlesByUserId } from '../../../api/endpoints/article';
 
 export const useMyArticles = (initialLimit: number = 10) => {
   const [articles, setArticles] = useState<IArticleDTO[]>([]);
@@ -15,7 +15,7 @@ export const useMyArticles = (initialLimit: number = 10) => {
     async (pageToLoad: number, isInitialLoad: boolean = false) => {
       try {
         setLoading(true);
-        const response = await fetchPersonalizedFeed(pageToLoad, limit);
+        const response = await fetchArticlesByUserId();
 
         if (!response.success || !response.data) {
           const message = response.message || generalMessages.ERROR.INTERNAL_SERVER_ERROR;
