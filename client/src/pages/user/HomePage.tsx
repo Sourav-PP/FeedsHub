@@ -3,9 +3,11 @@ import HeroBg from '../../assets/images/hero-bg.jpg';
 import { usePersonalizedFeed } from '../../features/user/hooks/usePersonalizedFeeds';
 import { useEffect, useState } from 'react';
 import type { IArticleDTO } from '../../types/dtos/article';
+import { useCategories } from '../../features/auth/hooks/useCategories';
 
 import Pagination from '../../components/ui/Pagination';
 import ArticleCard from '../../components/ui/ArticleCard';
+import { FiSearch } from 'react-icons/fi';
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center h-48">
@@ -14,29 +16,47 @@ const LoadingSpinner = () => (
 );
 
 const HomePage = () => {
-  // Using a limit of 9 for better visual layout (3 rows of 3)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+
   const { articles, getFeed, loading, page, totalPages } = usePersonalizedFeed(9);
+  const { categories, getCategories } = useCategories();
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   // --- Initial Data Fetch ---
   useEffect(() => {
-    // Only run the initial fetch once
     if (!initialLoadComplete) {
-      getFeed(1).then(() => {
+      getCategories();
+      getFeed(1, searchTerm, selectedCategory).then(() => {
         setInitialLoadComplete(true);
       });
     }
-  }, [initialLoadComplete, getFeed]);
+  }, [initialLoadComplete, getFeed, getCategories, searchTerm, selectedCategory]);
 
   // --- Pagination Handler ---
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages && newPage !== page && !loading) {
-      getFeed(newPage);
+      getFeed(newPage, searchTerm, selectedCategory);
       const feedSection = document.getElementById('article-feed-section');
       if (feedSection) {
         window.scrollTo({ top: feedSection.offsetTop - 100, behavior: 'smooth' });
       }
     }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCat = e.target.value;
+    setSelectedCategory(newCat);
+    getFeed(1, searchTerm, newCat);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    getFeed(1, searchTerm, selectedCategory);
   };
 
   return (
@@ -80,6 +100,48 @@ const HomePage = () => {
         <h2 className="text-4xl font-bold text-gray-900 mb-10 text-center">
           Your Personalized Feed
         </h2>
+
+        {/* --- NEW: Filter Controls --- */}
+        <div className="flex flex-col md:flex-row gap-4 mb-12 justify-center">
+
+          {/* Search Input: Enhanced appearance with subtle shadow and border grouping */}
+          <form 
+              onSubmit={handleSearchSubmit} 
+              className="flex max-w-md w-full md:w-96 shadow-md rounded-lg overflow-hidden border border-gray-300 focus-within:ring-2 focus-within:ring-blue-500 transition duration-150"
+          >
+              <input
+                  type="text"
+                  placeholder="Search by title or description..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  // Grow input, remove individual borders/rounding for a unified look
+                  className="grow px-5 py-3 text-gray-700 bg-white focus:outline-none placeholder-gray-500" 
+              />
+              <button
+                  type="submit"
+                  // Use a strong accent blue for the button
+                  className="px-4 py-3 bg-blue-600 text-white hover:bg-blue-700 transition duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={loading}
+              >
+                  <FiSearch className="w-5 h-5" />
+              </button>
+          </form>
+
+          {/* Category Dropdown: Styled to match the search input's height and aesthetic */}
+          <select
+              onChange={handleCategoryChange}
+              value={selectedCategory || ''}
+              className="px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-md text-gray-700 w-full md:w-56 appearance-none pr-8 cursor-pointer disabled:opacity-50"
+              disabled={loading}
+          >
+              <option value="">All Categories</option>
+              {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                  </option>
+              ))}
+          </select>
+      </div>
 
         {/* Conditional Rendering */}
         {loading && <LoadingSpinner />}

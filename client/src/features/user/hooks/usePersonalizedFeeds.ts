@@ -10,12 +10,26 @@ export const usePersonalizedFeed = (initialLimit: number = 10) => {
   const [totalPages, setTotalPages] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const [currentSearch, setCurrentSearch] = useState<string | undefined>(undefined);
+  const [currentCategory, setCurrentCategory] = useState<string | undefined>(undefined);
+
   const limit = initialLimit;
   const getFeed = useCallback(
-    async (pageToLoad: number, isInitialLoad: boolean = false) => {
+    async (
+      pageToLoad: number,
+      search?: string,
+      category?: string,
+      // isInitialLoad: boolean = false,
+    ) => {
       try {
+        const filtersChanged = search !== currentSearch || category !== currentCategory;
+        const effectivePageToLoad = filtersChanged ? 1 : pageToLoad;
+
+        if (search !== undefined) setCurrentSearch(search);
+        if (category !== undefined) setCurrentCategory(category);
+
         setLoading(true);
-        const response = await fetchPersonalizedFeed(pageToLoad, limit);
+        const response = await fetchPersonalizedFeed(effectivePageToLoad, limit, search, category);
 
         if (!response.success || !response.data) {
           const message = response.message || generalMessages.ERROR.INTERNAL_SERVER_ERROR;
@@ -27,18 +41,11 @@ export const usePersonalizedFeed = (initialLimit: number = 10) => {
 
         const calculatedTotalPages = Math.ceil(totalCount / limit);
 
-        setArticles((prevArticles) => {
-          // If it's the first page or a fresh fetch, replace articles
-          if (pageToLoad === 1 || isInitialLoad) {
-            return newArticles;
-          }
-          // For subsequent pages, append new articles
-          return [...prevArticles, ...newArticles];
-        });
+        setArticles(newArticles);
 
-        setPage(pageToLoad);
+        setPage(effectivePageToLoad);
         setTotalPages(calculatedTotalPages);
-        setHasMore(pageToLoad < calculatedTotalPages);
+        setHasMore(effectivePageToLoad < calculatedTotalPages);
 
         return { success: true, message: response.message };
       } catch (error) {
@@ -48,16 +55,19 @@ export const usePersonalizedFeed = (initialLimit: number = 10) => {
         setLoading(false);
       }
     },
-    [limit],
+    [currentCategory, currentSearch, limit],
   );
 
   const fetchNextPage = useCallback(() => {
     if (loading || !hasMore) return;
-    getFeed(page + 1);
-  }, [loading, hasMore, page, getFeed]);
+    getFeed(page + 1, currentSearch, currentCategory);
+  }, [loading, hasMore, getFeed, page, currentSearch, currentCategory]);
 
   // Refetch the first page
-  const refetch = useCallback(() => getFeed(1, true), [getFeed]);
+  const refetch = useCallback(
+    () => getFeed(1, currentSearch, currentCategory),
+    [currentCategory, currentSearch, getFeed],
+  );
 
   return { articles, loading, page, totalPages, hasMore, getFeed, fetchNextPage, refetch };
 };

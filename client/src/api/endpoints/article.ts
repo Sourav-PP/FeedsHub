@@ -23,10 +23,12 @@ export const createArticle = async (data: FormData): Promise<ICreateArticleRespo
 export const fetchPersonalizedFeed = async (
   page: number,
   limit: number,
+  search?: string,
+  category?: string,
 ): Promise<IGetArticlesResponse> => {
   try {
     const response = await axiosClient.get<IGetArticlesResponse>(articleRoutes.getPersonalized, {
-      params: { page, limit },
+      params: { page, limit, search, category },
     });
     return response.data;
   } catch (error) {

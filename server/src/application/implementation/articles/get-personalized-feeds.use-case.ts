@@ -8,45 +8,55 @@ import { ICategoryRepository } from "../../../domain/repositoryInterfaces/catego
 import { Article } from "../../../domain/entities/article.entity";
 
 export class GetPersonalizedFeedsUseCase implements IGetPersonalizedFeedsUseCase {
-  private _userRepo: IUserRepository;
-  private _articleRepo: IArticleRepository;
-  private _categoryRepo: ICategoryRepository;
+    private _userRepo: IUserRepository;
+    private _articleRepo: IArticleRepository;
+    private _categoryRepo: ICategoryRepository;
 
-  constructor(userRepo: IUserRepository, articleRepo: IArticleRepository, categoryRepo: ICategoryRepository) {
-    this._userRepo = userRepo;
-    this._articleRepo = articleRepo;
-    this._categoryRepo = categoryRepo;
-  }
+    constructor(userRepo: IUserRepository, articleRepo: IArticleRepository, categoryRepo: ICategoryRepository) {
+        this._userRepo = userRepo;
+        this._articleRepo = articleRepo;
+        this._categoryRepo = categoryRepo;
+    }
 
-  async execute(userId: string, limit: number, skip: number): Promise<{ articles: Article[]; total: number }> {
-      const user = await this._userRepo.findById(userId);
-      if(!user) {
-        throw new CustomError(generalMessages.ERROR.USER_NOT_FOUND, HttpStatusCode.NotFound);
-      }
+    async execute(
+        userId: string,
+        limit: number,
+        skip: number,
+        search: string,
+        category: string,
+    ): Promise<{ articles: Article[]; total: number }> {
+        const user = await this._userRepo.findById(userId);
+        if (!user) {
+            throw new CustomError(generalMessages.ERROR.USER_NOT_FOUND, HttpStatusCode.NotFound);
+        }
 
-      const categoryIds = user.preference
-      const categories = await this._categoryRepo.findAll();
+        console.log('search: ', search)
+        console.log('category: , ', category)
+        const categoryIds = user.preference;
+        const categories = await this._categoryRepo.findAll();
 
-      const categoryNames = categories.map(c => c.name);
+        const categoryNames = categories.map(c => c.name);
 
-      const searchParams = [...categoryIds, ...categoryNames];
+        const searchParams = [...categoryIds, ...categoryNames];
 
-      let articles = await this._articleRepo.findPersonalizedFeed(userId,searchParams, limit, skip);
-      let totalCount = await this._articleRepo.countAll(userId);
+        let articles = await this._articleRepo.findPersonalizedFeed(userId, searchParams, limit, skip, search, category);
+        let totalCount = await this._articleRepo.countAll(userId);
 
-      let returnData = {
-        articles: articles,
-        total: totalCount
-      };
-
-      if(articles.length === 0) {
-        const articles = await this._articleRepo.findAllArticles(userId, limit, skip);
-        returnData = {
-          articles: articles,
-          total: totalCount
+        let returnData = {
+            articles: articles,
+            total: totalCount,
         };
-      }
 
-      return returnData;
-  }
+        if (articles.length === 0) {
+            const articles = await this._articleRepo.findAllArticles(userId, limit, skip, search, category);
+            returnData = {
+                articles: articles,
+                total: totalCount,
+            };
+        }
+
+        console.log('articles: ', returnData.articles)
+
+        return returnData;
+    }
 }

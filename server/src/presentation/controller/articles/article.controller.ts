@@ -85,7 +85,10 @@ export class ArticleController {
             const page = parseInt(req.query.page as string) || 1;
             const skip = (page - 1) * limit;
 
-            const articles = await this._getPersonalizedFeedUseCase.execute(userId, limit, skip);
+            const category = req.query.category as string
+            const search = req.query.search as string
+
+            const articles = await this._getPersonalizedFeedUseCase.execute(userId, limit, skip, search, category);
             ApiResponse.success(res, articles, generalMessages.SUCCESS.ARTICLES_FETCHED);
         } catch (error) {
             next(error);

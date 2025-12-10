@@ -7,7 +7,20 @@ export interface IArticleRepository {
     updateById(userId: string, data: Partial<Article>): Promise<Article | null>;
     update(article: Partial<Article>): Promise<Article | null>;
     deleteById(userId: string): Promise<boolean>;
-    findPersonalizedFeed(userId: string, searchTerms: string[], limit: number, skip: number): Promise<Article[]>;
-    findAllArticles(userId: string, limit: number, skip: number): Promise<Article[]>;
+    findPersonalizedFeed(
+        userId: string,
+        searchTerms: string[],
+        limit: number,
+        skip: number,
+        search?: string,
+        category?: string,
+    ): Promise<Article[]>;
+    findAllArticles(
+        userId: string,
+        limit: number,
+        skip: number,
+        search?: string,
+        category?: string,
+    ): Promise<Article[]>;
     countAll(userId: string): Promise<number>;
 }
